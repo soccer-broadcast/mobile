@@ -1,10 +1,13 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import Championship from './src/UI/championship/championship';
+
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Soccer Broadcast</Text>
+      <Championship />
       <StatusBar style="auto" />
     </View>
   );
@@ -13,7 +16,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    marginTop: 50,
     alignItems: 'center',
     justifyContent: 'center',
   },
