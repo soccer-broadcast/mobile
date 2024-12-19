@@ -15,7 +15,6 @@ export default function Championship() {
 
         axios.get('https://api.football-data.org/v4/competitions/BSA/standings', { headers } )
             .then(response => {
-                alert(response.data);
                 setChamponship(response.data);
             })
             .catch(error => {
@@ -26,9 +25,13 @@ export default function Championship() {
 
     return (
         <View style={styles.container}>
+            {champonship?.standings === undefined ? (
+                <Text>Carregando...</Text>
+            ) : 
             <Table 
-                data={champonship?.standings}
-                header={['POS', 'Time', 'Pontos']} />
+            key={123}
+            data={champonship?.standings}
+            header={['Clube','Pts', 'V', 'E', 'D','SG']} />}
         </View>
     );
 };

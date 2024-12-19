@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import Championship from './src/UI/championship/championship';
+import Championship from './src/app/UI/championship/championship';
 
 
 export default function App() {
