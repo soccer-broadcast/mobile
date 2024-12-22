@@ -12,12 +12,12 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "plugins": [ 
-      [ 
-        "react-native-auth0", 
-        { 
-          "domain": "dev-g0agga2c5dcqfwjm.us.auth0.com" 
-        } 
+    "plugins": [
+      [
+        "react-native-auth0",
+        {
+          "domain": "dev-g0agga2c5dcqfwjm.us.auth0.com"
+        }
       ]
     ],
     "ios": {
@@ -33,6 +33,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c0409a8f-3eb6-49b0-a4ed-35378b7fab13"
+      }
     }
   }
 }

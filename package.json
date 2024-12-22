@@ -12,6 +12,7 @@
     "axios": "^1.7.9",
     "campeonato-brasileiro-api": "^1.2.10",
     "expo": "~52.0.11",
+    "expo-dev-client": "~5.0.6",
     "expo-image": "~2.0.3",
     "expo-status-bar": "~2.0.0",
     "react": "18.3.1",
