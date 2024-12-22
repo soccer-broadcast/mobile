@@ -12,6 +12,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "plugins": [ 
+      [ 
+        "react-native-auth0", 
+        { 
+          "domain": "dev-g0agga2c5dcqfwjm.us.auth0.com" 
+        } 
+      ]
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.diego-serrat.soccerbroadcast"
