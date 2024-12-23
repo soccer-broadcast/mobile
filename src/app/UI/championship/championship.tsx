@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import axios from 'axios';
-import Table from '../../shared/components/table';
+import Table from '../../shared/components/table/table';
 import { ChampionshipData } from '../../shared/Interface/championship';
 
 export default function Championship() {
