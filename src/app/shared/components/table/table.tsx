@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Image } from 'expo-image';
-import { Standings } from '../Interface/championship';
+import { Standings } from '../../Interface/championship';
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
 
 export default function Table({ data, header }: { data: Standings[] | [], header: string[] }) {
