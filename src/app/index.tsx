@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Championship from './src/app/UI/championship/championship';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Auth0Provider } from 'react-native-auth0';
-import Login from './src/app/UI/login/login';
-import config from './auth0-configuration';
+import Login from './UI/login/login';
+import config from '../../auth0-configuration';
 
-export default function App() {
-  
+export default function Index() {
 
   return (
      <Auth0Provider domain={config.domain} clientId={config.clientId}>

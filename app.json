@@ -2,6 +2,7 @@
   "expo": {
     "name": "soccer-broadcast",
     "slug": "soccer-broadcast",
+    "scheme": "soccer-broadcast",
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/soccer.jpeg",
@@ -18,7 +19,8 @@
         {
           "domain": "dev-g0agga2c5dcqfwjm.us.auth0.com"
         }
-      ]
+      ],
+      "expo-router"
     ],
     "ios": {
       "supportsTablet": true,
