@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Image } from 'expo-image';
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
-import { Standings } from '@/app/UI/championship/championship';
+import TableChampionship from '../utils/championship';
 
-export default function Table({ data, header }: { data: Standings[] | [], header: string[] }) {
-;    return (
+export default function TableComponent({ data, header }: { data: TableChampionship[] | [], header: string[] }) {  
+    return (
         <View style={styles.container}>
             <ScrollView>
                 <View style={styles.table}>
@@ -13,19 +13,19 @@ export default function Table({ data, header }: { data: Standings[] | [], header
                             <Text key={index} style={styles.cell}>{item}</Text>
                         ))}
                     </View>
-                    {data === undefined ? (
+                    {data.length === 0 ? (
                         <Text>Carregando...</Text>
                     ) : (
-                        data[0].table.map((item, index) => (
+                        data.map((item, index) => (
                             <View key={index} style={styles.row}>
-                                <Text style={styles.cellPostition}>{item.position}</Text>
-                                <Image  source={{ uri: item.team.crest }} 
+                                <Text style={styles.cellPostition}>{item.posicao}</Text>
+                                <Image  source={{ uri: item.time.escudo }} 
                                         style={styles.teamCrest}/>
-                                <Text style={styles.cell}>{item.points}</Text>
-                                <Text style={styles.cell}>{item.won}</Text>
-                                <Text style={styles.cell}>{item.draw}</Text>
-                                <Text style={styles.cell}>{item.lost}</Text>
-                                <Text style={styles.cell}>{item.goalDifference}</Text>
+                                <Text style={styles.cell}>{item.pontos}</Text>
+                                <Text style={styles.cell}>{item.vitorias}</Text>
+                                <Text style={styles.cell}>{item.empates}</Text>
+                                <Text style={styles.cell}>{item.derrotas}</Text>
+                                <Text style={styles.cell}>{item.saldo_gols}</Text>
                             </View>
                         ))
                     )}
