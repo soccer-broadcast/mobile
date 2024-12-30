@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Credentials, useAuth0 } from 'react-native-auth0';
 import { Image } from 'expo-image';
-import ButtonComponent from '../../shared/components/button/Button';
+import ButtonComponent from '../shared/components/button/Button';
 import { router } from 'expo-router';
 
 
@@ -12,11 +12,11 @@ export default function Login() {
 
 
     useEffect(() => {
-      if(user) {
-        router.navigate('./UI/championship/championship');
-        // router.navigate('../UI/login/login');
-        console.log('redirect');
-      }
+      // if(user) {
+      //   router.navigate('./UI/championship/championship');
+      //   // router.navigate('../UI/login/login');
+      //   console.log('redirect');
+      // }
     }, [user])
 
     const onLogin = async () => {
@@ -38,12 +38,12 @@ export default function Login() {
     };
 
     const isPressedButton = () => {
-
-      if(!user) {
-        onLogin();
-      } else {
-        onLogout();
-      }
+      router.push("../UI/tabs/championship")
+      // if(!user) {
+      //   onLogin();
+      // } else {
+      //   onLogout();
+      // }
     }
   
     if (isLoading) {
@@ -54,9 +54,10 @@ export default function Login() {
       <View style={styles.container}>
         <Image 
           style={styles.image}
-          source={require('../../../../assets/soccer.png')}/>
+          source={require('../../../assets/soccer.png')}/>
         <Text style={styles.text}>Onde Assistir Seu Jogo </Text>
-        {!user && <ButtonComponent pressed={isPressedButton} title='Entrar' activeOpacity={0.5}/>}
+        <ButtonComponent pressed={isPressedButton} title='Entrar' activeOpacity={0.5}/>
+        {/* {!user && <ButtonComponent pressed={isPressedButton} title='Entrar' activeOpacity={0.5}/>} */}
       </View>
     );
   };

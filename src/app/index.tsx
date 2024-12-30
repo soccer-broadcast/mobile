@@ -1,11 +1,10 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Auth0Provider } from 'react-native-auth0';
-import Login from './UI/login/login';
+import Login from './UI/index';
 import config from '../../auth0-configuration';
 
 export default function Index() {
-
   return (
      <Auth0Provider domain={config.domain} clientId={config.clientId}>
         <View style={styles.container}>

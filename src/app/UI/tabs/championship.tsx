@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import axios from 'axios';
-import Table from '../../shared/components/table/table';
-import ButtonComponent from '@/app/shared/components/button/Button';
 import { useAuth0 } from 'react-native-auth0';
 import { router } from 'expo-router';
 
@@ -110,11 +108,7 @@ export default function Championship() {
                 <Text>Carregando...</Text>
             ) : 
             <View>
-                <ButtonComponent pressed={onLogout} title='Log Out' />
-                <Table 
-                    key={123}
-                    data={champonship?.standings}
-                    header={['Clube','Pts', 'V', 'E', 'D','SG']} />
+                <Text>Championship tabs</Text>
             </View>
             }
         </View>
