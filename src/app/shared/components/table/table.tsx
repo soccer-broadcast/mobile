@@ -3,7 +3,7 @@ import { Image } from 'expo-image';
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
 import TableChampionship from '../utils/championship';
 
-export default function TableComponent({ data, header }: { data: TableChampionship[] | [], header: string[] }) {  
+export default function TableComponent({ data, header }: { data: TableChampionship[], header: string[] }) {  
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
         padding: 10,
       },
       header: {
-        backgroundColor: '#f4f4f4',
         borderBottomWidth: 2,
         borderBottomColor: '#aaa',
       },
