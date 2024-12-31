@@ -7,7 +7,7 @@ export default function Layout() {
         <Tabs screenOptions={{headerShown: false}}>
             <Tabs.Screen
                 name="championship"
-                options={{ title: "Campeonato", headerShown: false,
+                options={{ href: './championship', title: "Campeonato", headerShown: false,
                     tabBarIcon: ( { focused }) => (
                        <View>
                             <IonIcons
@@ -21,7 +21,7 @@ export default function Layout() {
             />
             <Tabs.Screen
                 name="team"
-                options={{ title: "Time", headerShown: false,
+                options={{ href: './team', title: "Time", headerShown: false,
                     tabBarIcon: ( { focused }) => (
                         <View>
                              <IonIcons
@@ -35,7 +35,7 @@ export default function Layout() {
             />
             <Tabs.Screen
                 name="user"
-                options={{ title: "Usuário", headerShown: false,
+                options={{ href: './user', title: "Usuário", headerShown: false,
                     tabBarIcon: ( { focused }) => (
                         <View>
                              <IonIcons
