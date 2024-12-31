@@ -10,6 +10,7 @@ import COLORS from '@/app/shared/components/utils/colors';
 export default function Championship() {
 
     const [ championshipTable, setChampionshipTable ] = useState<TableChampionship[]>();
+    const [ championship, setChampionship ] = useState<any[]>();
     const { authorize, clearSession, user, getCredentials } = useAuth0();
 
     useEffect(() => {
@@ -21,11 +22,21 @@ export default function Championship() {
     const getChampionshipTable = async (headers: any) => {
         await axios.get('https://api.api-futebol.com.br/v1/campeonatos/10/tabela', { headers } )
             .then(response => {
-              setChampionshipTable(response.data);
+              setChampionshipTable(response.data as TableChampionship[]);
             })
             .catch(error => {
                 console.error(error);
             });
+    };
+
+    const getChampionship = async (headers: any) => {
+      await axios.get('https://api.api-futebol.com.br/v1/campeonatos/10', { headers } )
+                .then(response => {
+                  // setChampionship(response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
     };
 
     const logout = async () => {
@@ -49,7 +60,8 @@ export default function Championship() {
             ) : 
               <View style={styles.container}>
                 <View style={styles.headerChampionship}>
-                  <Image source={'../../../assets/images/soccer.jpeg'} />
+                  <Image source={require('../../../../assets/soccer.png')} style={styles.championshipLogo}/>
+                  <Text>{championship?.nome}</Text>
                 </View>
                 <TableComponent 
                     key={123}
@@ -71,5 +83,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 250,
     backgroundColor: COLORS.dark_blue,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+  championshipLogo: {
+    width: 150,
+    height: 150,
+  }
 });
