@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Credentials, useAuth0 } from 'react-native-auth0';
 import { Image } from 'expo-image';
-import { COLORS } from '../../shared/utils/color-system';
-import { FONTS } from '../../shared/utils/fonts-system';
-import ButtonComponent from '../../shared/components/button/Button';
+import ButtonComponent from '../shared/components/button/Button';
+import { router } from 'expo-router';
+import COLORS from '@/app/shared/components/utils/colors';
 
 
 export default function Login() {
     const { authorize, clearSession, user, getCredentials, isLoading } = useAuth0();
     const [ credentials, setCredentials ] = useState<Credentials>();
+
+
+    useEffect(() => {
+      // if(user) {
+      //   router.navigate('./UI/championship/championship');
+      //   // router.navigate('../UI/login/login');
+      //   console.log('redirect');
+      // }
+    }, [])
 
     const onLogin = async () => {
       try {
@@ -21,36 +30,35 @@ export default function Login() {
       }
     };
   
-    // const onLogout = async () => {
-    //   try {
-    //     await clearSession();
-    //   } catch (e) {
-    //     Alert.alert('Error logout: ' + e);
-    //   }
-    // };
+    const onLogout = async () => {
+      try {
+        await clearSession();
+      } catch (e) {
+        Alert.alert('Error logout: ' + e);
+      }
+    };
+
+    const isPressedButton = () => {
+      router.push("../UI/tabs/championship")
+      // if(!user) {
+      //   onLogin();
+      // } else {
+      //   onLogout();
+      // }
+    }
   
     if (isLoading) {
       return <View style={styles.container}><Text>Loading</Text></View>;
-    }
-  
-    const isPressedButton = () => {
-
-      if(!user) {
-        onLogin();
-      } else {
-        console.log('goTo Home');
-        // navigation.navigate('Home')
-      }
     }
 
     return (
       <View style={styles.container}>
         <Image 
           style={styles.image}
-          source={require('../../../../assets/soccer.png')}/>
-        {/* {user && <ButtonComponent pressed={isPressedButton} title='Log Out' />} */}
+          source={require('../../../assets/soccer.png')}/>
         <Text style={styles.text}>Onde Assistir Seu Jogo </Text>
-        {!user && <ButtonComponent pressed={isPressedButton} title='Entrar' activeOpacity={0.5}/>}
+        <ButtonComponent pressed={isPressedButton} title='Entrar' activeOpacity={0.5}/>
+        {/* {!user && <ButtonComponent pressed={isPressedButton} title='Entrar' activeOpacity={0.5}/>} */}
       </View>
     );
   };
@@ -75,9 +83,9 @@ export default function Login() {
     },
     text: {
       textAlign: 'center',
-      color: COLORS.meduim_blue,
+      color: '#0D80BF',
       fontSize: 20,
-      fontFamily: FONTS.regular,
+      fontFamily: 'Helvetica',
       fontWeight: 'bold',
       marginBottom: 50
     }
