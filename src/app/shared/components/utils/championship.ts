@@ -1,4 +1,4 @@
-export default interface TableChampionship {
+interface TableChampionship {
     posicao: number;
     pontos: number;
     time: Team;
@@ -14,9 +14,11 @@ export default interface TableChampionship {
     ultimos_jogos: string[];
 }
 
-export interface Team { 
+interface Team { 
     time_id: number;
     nome_popular: string;
     sigla: string;
     escudo: string;
 }
+
+export default TableChampionship

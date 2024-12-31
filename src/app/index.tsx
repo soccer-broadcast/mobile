@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Auth0Provider } from 'react-native-auth0';
-import Login from './UI/index';
+import Login from './UI';
 import config from '../../auth0-configuration';
 
 export default function Index() {

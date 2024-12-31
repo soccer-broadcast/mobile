@@ -1,4 +1,5 @@
 import { TouchableOpacity, StyleSheet, Text, TouchableOpacityProps } from 'react-native';
+import COLORS from '../utils/colors';
 
 export default function ButtonComponent( { pressed, title, ...rest }: {pressed: () => void, title: string} & TouchableOpacityProps ) {
     return (
@@ -12,13 +13,13 @@ const styles = StyleSheet.create({
     button: {
         width: 300,
         height: 50,
-        backgroundColor: '#1E90FF',
+        backgroundColor: COLORS.dark_blue,
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
     },
     text: {
-        color: '#FFFFFF',
+        color: COLORS.white,
         fontSize: 20,
         fontFamily:  'Helvetica',
     }

@@ -4,6 +4,7 @@ import { Credentials, useAuth0 } from 'react-native-auth0';
 import { Image } from 'expo-image';
 import ButtonComponent from '../shared/components/button/Button';
 import { router } from 'expo-router';
+import COLORS from '@/app/shared/components/utils/colors';
 
 
 export default function Login() {
@@ -17,7 +18,7 @@ export default function Login() {
       //   // router.navigate('../UI/login/login');
       //   console.log('redirect');
       // }
-    }, [user])
+    }, [])
 
     const onLogin = async () => {
       try {
@@ -68,7 +69,7 @@ export default function Login() {
       width: '100%',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#FFFFFF',
+      backgroundColor: COLORS.white,
       padding: 20
     },
     header: {
