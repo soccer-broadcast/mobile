@@ -1,43 +1,79 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import axios from 'axios';
 import { Image } from 'expo-image';
 import { useAuth0 } from 'react-native-auth0';
-import TableChampionship from '@/app/shared/components/utils/championship';
-import TableComponent from '@/app/shared/components/table/table';
+import { useQuery } from '@tanstack/react-query';
+import moment from 'moment';
+
 import COLORS from '@/app/shared/components/utils/colors';
+import TableComponent from '@/app/shared/components/table/table';
+import { fetchDataChampionship, fetchDataChampionshipTable } from '@/app/service/fetchChampionship';
+
+
+export interface Championship { 
+  id: number;
+  nome: string;
+  nome_popular: string;
+  logo: string;
+}
+
+export interface TableChampionship { 
+  posicao: number;
+  pontos: number;
+  time: Team;
+  jogos: number;
+  vitorias: number;
+  empates: number;
+  derrotas: number;
+  gols_pro: number;
+  gols_contra: number;
+  saldo_gols: number;
+  aproveitamento: number;
+  variacao_posicao: number;
+  ultimos_jogos: string[];
+  ['primeira-fase']?: PrimeiraFase;
+}
+
+export interface TableChampionshipGroups { 
+  [key: string]: TableChampionship[];
+}
+
+export interface PrimeiraFase {
+  [key: string]: TableChampionship[];
+}
+
+export interface Team { 
+  time_id: number;
+  nome_popular: string;
+  sigla: string;
+  escudo: string;
+}
 
 export default function Championship() {
 
     const [ championshipTable, setChampionshipTable ] = useState<TableChampionship[]>();
-    const [ championship, setChampionship ] = useState<any[]>();
+    const [ championship, setChampionship ] = useState<Championship>();
     const { authorize, clearSession, user, getCredentials } = useAuth0();
 
+    const { data, isLoading } = useQuery({
+      queryKey: ['championshipTable'],
+      queryFn: () => fetchDataChampionshipTable(),
+    });
+
+    const result = useQuery({
+      queryKey: ['championship'],
+      queryFn: () => fetchDataChampionship(),
+    });
+
     useEffect(() => {
-        const headers = { 'Authorization': 'Bearer live_378a59495af5df81988afefdc2cf99' };
+      if(data) {
+        setChampionshipTable(data);
+      }
 
-        getChampionshipTable(headers);
-    }, []);
-
-    const getChampionshipTable = async (headers: any) => {
-        await axios.get('https://api.api-futebol.com.br/v1/campeonatos/10/tabela', { headers } )
-            .then(response => {
-              setChampionshipTable(response.data as TableChampionship[]);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    };
-
-    const getChampionship = async (headers: any) => {
-      await axios.get('https://api.api-futebol.com.br/v1/campeonatos/10', { headers } )
-                .then(response => {
-                  // setChampionship(response.data);
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-    };
+      if(result.data) {
+        setChampionship(result.data);
+      }
+    }, [data, result.data]);
 
     const logout = async () => {
         try {
@@ -55,15 +91,15 @@ export default function Championship() {
 
     return (
         <View style={styles.container}>
-            {championshipTable?.length === 0  ? (
-                <Text>Carregando...</Text>
+            {isLoading  ? (
+                <Text>Carregando... { isLoading } {}</Text>
             ) : 
               <View style={styles.container}>
                 <View style={styles.headerChampionship}>
-                  <Image source={require('../../../../assets/soccer.png')} style={styles.championshipLogo}/>
+                  <Image source={championship?.logo} style={styles.championshipLogo}/>
                   <Text>{championship?.nome}</Text>
                 </View>
-                <TableComponent 
+                  <TableComponent 
                     key={123}
                     data={championshipTable ? championshipTable : []}
                     header={['Clube','Pts', 'V', 'E', 'D','SG']} />
@@ -82,7 +118,7 @@ const styles = StyleSheet.create({
   headerChampionship: {
     width: '100%',
     height: 250,
-    backgroundColor: COLORS.dark_blue,
+    backgroundColor: COLORS.green,
     justifyContent: 'center',
     alignItems: 'center',
   },

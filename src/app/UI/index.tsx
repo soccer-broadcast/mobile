@@ -5,7 +5,7 @@ import { Image } from 'expo-image';
 import ButtonComponent from '../shared/components/button/Button';
 import { router } from 'expo-router';
 import COLORS from '@/app/shared/components/utils/colors';
-
+import { QueryClient } from '@tanstack/react-query';
 
 export default function Login() {
     const { authorize, clearSession, user, getCredentials, isLoading } = useAuth0();
