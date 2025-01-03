@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image } from 'expo-image';
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
-import { TableChampionship, TableChampionshipGroups } from '@/app/UI/tabs/championship';
 
-export default function TableComponent({ data, header }: { data: unknown[] | TableChampionshipGroups, header: string[] }) {  
+export default function TableComponent({ data, header }: { data: any, header: string[] }) {  
     return (
         <View style={styles.container}>
             <ScrollView>

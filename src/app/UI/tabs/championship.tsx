@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Image } from 'expo-image';
 import { useAuth0 } from 'react-native-auth0';
 import { useQuery } from '@tanstack/react-query';
-import moment from 'moment';
 
 import COLORS from '@/app/shared/components/utils/colors';
 import TableComponent from '@/app/shared/components/table/table';
 import { fetchDataChampionship, fetchDataChampionshipTable } from '@/app/service/fetchChampionship';
-
 
 export interface Championship { 
   id: number;
@@ -31,15 +29,39 @@ export interface TableChampionship {
   aproveitamento: number;
   variacao_posicao: number;
   ultimos_jogos: string[];
-  ['primeira-fase']?: PrimeiraFase;
+  fases: [];
 }
 
-export interface TableChampionshipGroups { 
-  [key: string]: TableChampionship[];
+export interface FaseChampionship { 
+  fase_id: number;
+  edicao: Edicao;  
+  nome: string;
+  slug: string;
+  status: string;
+  decisivo: string;
+  ida_e_volta: string;
+  tipo: string;
+  grupos: [];
+  chaves: [];
+  proxima_fase: Fase;
+  fase_anterior: Fase;
+  _link: string
 }
 
-export interface PrimeiraFase {
-  [key: string]: TableChampionship[];
+export interface Edicao {
+  edicao_id: number;
+  temporada: string;
+  nome: string;
+  nome_popular: string;
+  slug: string;
+}
+
+export interface Fase {
+  fase_id: number;
+  nome: string;
+  slug: string;
+  tipo: string;
+  _link: string;
 }
 
 export interface Team { 
@@ -50,60 +72,62 @@ export interface Team {
 }
 
 export default function Championship() {
-
-    const [ championshipTable, setChampionshipTable ] = useState<TableChampionship[]>();
-    const [ championship, setChampionship ] = useState<Championship>();
     const { authorize, clearSession, user, getCredentials } = useAuth0();
 
-    const { data, isLoading } = useQuery({
+    const championshipTableQuery = useQuery({
       queryKey: ['championshipTable'],
       queryFn: () => fetchDataChampionshipTable(),
     });
 
-    const result = useQuery({
+    const championshipQuery = useQuery({
       queryKey: ['championship'],
       queryFn: () => fetchDataChampionship(),
     });
 
-    useEffect(() => {
-      if(data) {
-        setChampionshipTable(data);
-      }
+    const getTableGroups = (tableData: any) => { 
+      return Object.keys(tableData).map((key: any) =>  key );
+    }
 
-      if(result.data) {
-        setChampionship(result.data);
-      }
-    }, [data, result.data]);
+    // const logout = async () => {
+    //     try {
+    //       await clearSession();
+    //     } catch (e) {
+    //       console.log(e)
+    //     }
+    //   };
 
-    const logout = async () => {
-        try {
-          await clearSession();
-        } catch (e) {
-          console.log(e)
-        }
-      };
-
-    const onLogout = async () => {
-        if(!user) {
-            logout();
-        }
-    };
+    // const onLogout = async () => {
+    //     if(!user) {
+    //         logout();
+    //     }
+    // };
 
     return (
         <View style={styles.container}>
-            {isLoading  ? (
-                <Text>Carregando... { isLoading } {}</Text>
+            { championshipTableQuery.isLoading || championshipQuery.isLoading ? (
+                <Text>Carregando...</Text>
             ) : 
-              <View style={styles.container}>
+              <ScrollView style={styles.container}>
                 <View style={styles.headerChampionship}>
-                  <Image source={championship?.logo} style={styles.championshipLogo}/>
-                  <Text>{championship?.nome}</Text>
+                  <Image source={championshipQuery?.data?.logo} style={styles.championshipLogo}/>
+                  <Text>{championshipQuery?.data?.nome}</Text>
                 </View>
-                  <TableComponent 
-                    key={123}
-                    data={championshipTable ? championshipTable : []}
-                    header={['Clube','Pts', 'V', 'E', 'D','SG']} />
-              </View>
+                  {championshipTableQuery.data['primeira-fase'] ? (
+                    getTableGroups(championshipTableQuery.data['primeira-fase']).map((data: any) => {
+                      return (
+                        <TableComponent 
+                        key={data}
+                        data={championshipTableQuery.data['primeira-fase'][data]}
+                        header={['Clube','Pts', 'V', 'E', 'D','SG']} />
+                      )
+                    })
+                  ) : (
+                    <TableComponent 
+                     key={123}
+                     data={championshipTableQuery.data}
+                     header={['Clube','Pts', 'V', 'E', 'D','SG']} />
+                  )}
+              </ScrollView>
             }
         </View>
     );
