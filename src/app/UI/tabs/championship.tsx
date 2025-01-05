@@ -1,12 +1,14 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
-import { useAuth0 } from 'react-native-auth0';
 import { useQuery } from '@tanstack/react-query';
 
 import COLORS from '@/app/shared/components/utils/colors';
 import TableComponent from '@/app/shared/components/table/table';
-import { fetchDataChampionship, fetchDataChampionshipTable } from '@/app/service/fetchChampionship';
+import { fetchDataChampionship, fetchDataChampionshipTable } from '@/app/service/service-championship';
 import HeaderComponent from '@/app/shared/components/header/header';
+import MenuTabsComponent from '@/app/shared/components/menu-tabs/menu-tabs';
+import { fetchDataChampionshipRound } from '@/app/service/service-round';
+import ListComponent from '@/app/shared/components/list/list';
 
 export interface Championship { 
   id: number;
@@ -76,7 +78,7 @@ const H_MIN_HEIGHT = 50;
 const H_SCROLL_DISTANCE = H_MAX_HEIGHT - H_MIN_HEIGHT;
 
 export default function Championship() {
-    const { authorize, clearSession, user, getCredentials } = useAuth0();
+    const [ tabActive, setTabActive ] = useState(0);
     const scrollOffsetY = useRef(new Animated.Value(0)).current;
 
     const headerScrollHeight = scrollOffsetY.interpolate({
@@ -101,25 +103,20 @@ export default function Championship() {
       queryFn: () => fetchDataChampionship(),
     });
 
+    const roundQuery = useQuery({
+      queryKey: ['round'],
+      queryFn: () => fetchDataChampionshipRound(),
+    });
+
     const getTableGroups = (tableData: any) => { 
       return Object.keys(tableData).map((key: any) =>  key );
     }
 
-    const handleScroll = Animated.event([{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }], { useNativeDriver: false });
+    let handleScroll = Animated.event([{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }], { useNativeDriver: false });
 
-    // const logout = async () => {
-    //     try {
-    //       await clearSession();
-    //     } catch (e) {
-    //       console.log(e)
-    //     }
-    //   };
-
-    // const onLogout = async () => {
-    //     if(!user) {
-    //         logout();
-    //     }
-    // };
+    const tabChanged = (index: number) => {  
+      setTabActive(index);
+    }
 
     return (
         <View style={styles.container}>
@@ -133,23 +130,34 @@ export default function Championship() {
                   headerScrollHeight={headerScrollHeight} 
                   imageScaleHight={imageScaleHight}/>
 
+                <MenuTabsComponent 
+                  onTabChange={tabChanged}
+                  tabsMenuOptions={['Tabela', 'Rodada atual']}
+                />
+
                 <Animated.ScrollView style={styles.container}
                     onScroll={handleScroll}
                     scrollEventThrottle={16}>
-                    {championshipTableQuery.data['primeira-fase'] ? (
-                      getTableGroups(championshipTableQuery.data['primeira-fase']).map((data: any) => {
-                        return (
+                    {tabActive === 0 ? (
+                        championshipTableQuery.data?.['primeira-fase'] ? (
+                          getTableGroups(championshipTableQuery.data['primeira-fase']).map((data: any) => {
+                            return (
+                              <TableComponent 
+                                key={data}
+                                data={championshipTableQuery.data['primeira-fase'][data]}
+                                header={['Clube','Pts', 'V', 'E', 'D','SG']} 
+                              />
+                            );
+                          })
+                        ) : (
                           <TableComponent 
-                          key={data}
-                          data={championshipTableQuery.data['primeira-fase'][data]}
-                          header={['Clube','Pts', 'V', 'E', 'D','SG']} />
+                            key={123}
+                            data={championshipTableQuery.data} 
+                            header={['Clube','Pts', 'V', 'E', 'D','SG']} 
+                          />
                         )
-                      })
-                    ) : (
-                      <TableComponent 
-                      key={123}
-                      data={championshipTableQuery.data}
-                      header={['Clube','Pts', 'V', 'E', 'D','SG']} />
+                      ) : (
+                        <ListComponent data={roundQuery.data as []} />
                     )}
                 </Animated.ScrollView>
               </>
@@ -163,16 +171,5 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     backgroundColor: COLORS.white,
-  },
-  headerChampionship: {
-    width: '100%',
-    height: 250,
-    backgroundColor: COLORS.green,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  championshipLogo: {
-    width: 150,
-    height: 200
   }
 });

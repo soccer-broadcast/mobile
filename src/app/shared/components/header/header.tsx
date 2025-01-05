@@ -1,6 +1,7 @@
 import { Text, StyleSheet, Animated } from "react-native";
-import COLORS from '@/app/shared/components/utils/colors';
 import { useEffect, useState } from "react";
+
+import COLORS from '@/app/shared/components/utils/colors';
 
 export interface HeaderComponentProps {
     imageSource: string;
@@ -20,7 +21,7 @@ export default function HeaderComponent({ imageSource, title, headerScrollHeight
         });
 
         return () => { headerScrollHeight.removeListener(listener); };
-    }, [isRow]);
+    }, [isRow, headerScrollHeight, imageScaleHight]);
 
     return (
         <Animated.View 
