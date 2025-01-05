@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, ScrollView, StatusBar, Animated } from 'react-native';
-import { Image } from 'expo-image';
+import React, { useRef } from 'react';
+import { View, Text, StyleSheet, Animated } from 'react-native';
 import { useAuth0 } from 'react-native-auth0';
 import { useQuery } from '@tanstack/react-query';
 
@@ -131,8 +130,9 @@ export default function Championship() {
                 <HeaderComponent 
                   imageSource={championshipQuery.data.logo} 
                   title={championshipQuery.data.nome_popular} 
-                  headerScrollHeight={headerScrollHeight} />
-                  {/* imageHeight={imageScaleHight} */}
+                  headerScrollHeight={headerScrollHeight} 
+                  imageScaleHight={imageScaleHight}/>
+
                 <Animated.ScrollView style={styles.container}
                     onScroll={handleScroll}
                     scrollEventThrottle={16}>

@@ -56,7 +56,7 @@ export default function Login() {
         <Image 
           style={styles.image}
           source={require('../../../assets/soccer.png')}/>
-        <Text style={styles.text}>Onde Assistir ?</Text>
+        <Text style={styles.text}>Onde Assistir</Text>
         <ButtonComponent pressed={isPressedButton} title='Entrar' activeOpacity={0.5}/>
       </View>
     );

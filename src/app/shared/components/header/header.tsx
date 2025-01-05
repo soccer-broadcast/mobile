@@ -1,15 +1,16 @@
-import { View, Text, StyleSheet, Animated } from "react-native";
+import { Text, StyleSheet, Animated } from "react-native";
 import { Image } from 'expo-image';
 import COLORS from '@/app/shared/components/utils/colors';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export interface HeaderComponentProps {
     imageSource: string;
     title: string;
     headerScrollHeight: Animated.AnimatedInterpolation<string | number>;
+    imageScaleHight: Animated.AnimatedInterpolation<string | number>;
 }
 
-export default function HeaderComponent({ imageSource, title, headerScrollHeight }: HeaderComponentProps) {
+export default function HeaderComponent({ imageSource, title, headerScrollHeight, imageScaleHight }: HeaderComponentProps) {
     const [ isRow, setIsRow ] = useState<boolean>(false);
     
     useEffect(() => {
@@ -34,8 +35,11 @@ export default function HeaderComponent({ imageSource, title, headerScrollHeight
                     flexDirection: isRow ? 'row' : 'column'
                 },
             ]}>
-            <Image source={imageSource} style={styles.logo} contentFit="contain"/>
-            <Text>{title}</Text>
+            <Animated.Image source={{uri: imageSource}} style={{
+                width: imageScaleHight,
+                height: imageScaleHight,
+            }} resizeMode="contain"/>
+            <Text style={styles.title}>{title}</Text>
         </Animated.View>
     );
 }
@@ -47,8 +51,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    logo: {
-        width: 150,
-        height: 150,
+    title: {
+        color: COLORS.white,
+        fontSize: 20,
+        fontFamily: 'Helvetica',
+        fontWeight: 'bold'
     }
 });
