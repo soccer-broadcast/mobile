@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     title: {
-        color: COLORS.white,
         fontSize: 18,
         fontFamily: 'Helvetica',
         fontWeight: 'bold'
