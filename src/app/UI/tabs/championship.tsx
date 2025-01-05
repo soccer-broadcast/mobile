@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView, StatusBar, Animated } from 'react-native';
 import { Image } from 'expo-image';
 import { useAuth0 } from 'react-native-auth0';
 import { useQuery } from '@tanstack/react-query';
@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import COLORS from '@/app/shared/components/utils/colors';
 import TableComponent from '@/app/shared/components/table/table';
 import { fetchDataChampionship, fetchDataChampionshipTable } from '@/app/service/fetchChampionship';
+import HeaderComponent from '@/app/shared/components/header/header';
 
 export interface Championship { 
   id: number;
@@ -71,8 +72,25 @@ export interface Team {
   escudo: string;
 }
 
+const H_MAX_HEIGHT = 250;
+const H_MIN_HEIGHT = 50;
+const H_SCROLL_DISTANCE = H_MAX_HEIGHT - H_MIN_HEIGHT;
+
 export default function Championship() {
     const { authorize, clearSession, user, getCredentials } = useAuth0();
+    const scrollOffsetY = useRef(new Animated.Value(0)).current;
+
+    const headerScrollHeight = scrollOffsetY.interpolate({
+        inputRange: [0, H_SCROLL_DISTANCE],
+        outputRange: [H_MAX_HEIGHT, H_MIN_HEIGHT],
+        extrapolate: 'clamp'
+    });
+
+    const imageScaleHight = scrollOffsetY.interpolate({
+        inputRange: [0, H_SCROLL_DISTANCE],
+        outputRange: [150, 50],
+        extrapolate: 'clamp'
+    });
 
     const championshipTableQuery = useQuery({
       queryKey: ['championshipTable'],
@@ -87,6 +105,8 @@ export default function Championship() {
     const getTableGroups = (tableData: any) => { 
       return Object.keys(tableData).map((key: any) =>  key );
     }
+
+    const handleScroll = Animated.event([{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }], { useNativeDriver: false });
 
     // const logout = async () => {
     //     try {
@@ -107,27 +127,32 @@ export default function Championship() {
             { championshipTableQuery.isLoading || championshipQuery.isLoading ? (
                 <Text>Carregando...</Text>
             ) : 
-              <ScrollView style={styles.container}>
-                <View style={styles.headerChampionship}>
-                  <Image source={championshipQuery?.data?.logo} style={styles.championshipLogo}/>
-                  <Text>{championshipQuery?.data?.nome}</Text>
-                </View>
-                  {championshipTableQuery.data['primeira-fase'] ? (
-                    getTableGroups(championshipTableQuery.data['primeira-fase']).map((data: any) => {
-                      return (
-                        <TableComponent 
-                        key={data}
-                        data={championshipTableQuery.data['primeira-fase'][data]}
-                        header={['Clube','Pts', 'V', 'E', 'D','SG']} />
-                      )
-                    })
-                  ) : (
-                    <TableComponent 
-                     key={123}
-                     data={championshipTableQuery.data}
-                     header={['Clube','Pts', 'V', 'E', 'D','SG']} />
-                  )}
-              </ScrollView>
+              <>
+                <HeaderComponent 
+                  imageSource={championshipQuery.data.logo} 
+                  title={championshipQuery.data.nome_popular} 
+                  headerScrollHeight={headerScrollHeight} />
+                  {/* imageHeight={imageScaleHight} */}
+                <Animated.ScrollView style={styles.container}
+                    onScroll={handleScroll}
+                    scrollEventThrottle={16}>
+                    {championshipTableQuery.data['primeira-fase'] ? (
+                      getTableGroups(championshipTableQuery.data['primeira-fase']).map((data: any) => {
+                        return (
+                          <TableComponent 
+                          key={data}
+                          data={championshipTableQuery.data['primeira-fase'][data]}
+                          header={['Clube','Pts', 'V', 'E', 'D','SG']} />
+                        )
+                      })
+                    ) : (
+                      <TableComponent 
+                      key={123}
+                      data={championshipTableQuery.data}
+                      header={['Clube','Pts', 'V', 'E', 'D','SG']} />
+                    )}
+                </Animated.ScrollView>
+              </>
             }
         </View>
     );
@@ -144,10 +169,10 @@ const styles = StyleSheet.create({
     height: 250,
     backgroundColor: COLORS.green,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   championshipLogo: {
     width: 150,
-    height: 150,
+    height: 200
   }
 });

@@ -2,7 +2,12 @@ import React, { useEffect } from 'react';
 import { Image } from 'expo-image';
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
 
-export default function TableComponent({ data, header }: { data: any, header: string[] }) {  
+export interface TableComponentProps {
+  data: any;
+  header: string[];
+}
+
+export default function TableComponent({ data, header }: TableComponentProps) {  
     return (
         <View style={styles.container}>
             <ScrollView>

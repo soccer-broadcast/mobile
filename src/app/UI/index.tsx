@@ -39,7 +39,7 @@ export default function Login() {
     };
 
     const isPressedButton = () => {
-      router.push("../UI/tabs/championship")
+      router.replace("../UI/tabs/championship")
       // if(!user) {
       //   onLogin();
       // } else {
@@ -56,9 +56,8 @@ export default function Login() {
         <Image 
           style={styles.image}
           source={require('../../../assets/soccer.png')}/>
-        <Text style={styles.text}>Onde Assistir Seu Jogo </Text>
+        <Text style={styles.text}>Onde Assistir ?</Text>
         <ButtonComponent pressed={isPressedButton} title='Entrar' activeOpacity={0.5}/>
-        {/* {!user && <ButtonComponent pressed={isPressedButton} title='Entrar' activeOpacity={0.5}/>} */}
       </View>
     );
   };
