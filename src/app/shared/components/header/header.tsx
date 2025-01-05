@@ -1,5 +1,4 @@
 import { Text, StyleSheet, Animated } from "react-native";
-import { Image } from 'expo-image';
 import COLORS from '@/app/shared/components/utils/colors';
 import { useEffect, useState } from "react";
 
