@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Image } from 'expo-image';
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
 
 export interface TableComponentProps {
-  data: any;
+  data: unknown[];
   header: string[];
 }
 
@@ -20,7 +20,7 @@ export default function TableComponent({ data, header }: TableComponentProps) {
                     {data.length === 0 ? (
                         <Text>Carregando...</Text>
                     ) : (
-                        data.map((item, index) => (
+                        data.map((item, index: number) => (
                             <View key={index} style={styles.row}>
                                 <Text style={styles.cellPostition}>{item.posicao}</Text>
                                 <Image  source={{ uri: item.time.escudo }} 

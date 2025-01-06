@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import COLORS from '../../utils/colors';
 
 export interface MenuTabsProps {
   onTabChange: (index: number) => void;
@@ -14,7 +15,6 @@ export default function MenuTabsComponent({ onTabChange, tabsMenuOptions }: Menu
   const handleTabPress = (index: number) => {
     setActiveTab(index);
     onTabChange(index);
-
   };
 
   return (
@@ -22,15 +22,9 @@ export default function MenuTabsComponent({ onTabChange, tabsMenuOptions }: Menu
         {tabs.map((tab, index) => (
           <TouchableOpacity
             key={index}
-            style={[
-              styles.tab,
-              activeTab === index ? styles.activeTab : null,
-            ]}
+            style={[ styles.tab, activeTab === index ? styles.activeTab : null ]}
             onPress={() => handleTabPress(index)}>
-            <Text style={[
-                styles.tabText,
-                activeTab === index ? styles.activeTabText : null,
-              ]}>
+            <Text style={[ styles.tabText, activeTab === index ? styles.activeTabText : null]}>
               {tab}
             </Text>
           </TouchableOpacity>
@@ -56,13 +50,14 @@ const styles = StyleSheet.create({
   },
   activeTab: {
     borderBottomWidth: 2,
-    borderBottomColor: '#007BFF',
+    borderBottomColor: COLORS.blue,
   },
   tabText: {
     color: '#666',
+    fontFamily: 'Helvetica',
   },
   activeTabText: {
-    color: '#007BFF',
+    color: COLORS.blue,
     fontWeight: 'bold',
   },
   content: {

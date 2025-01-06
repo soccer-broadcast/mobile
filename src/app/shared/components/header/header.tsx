@@ -1,7 +1,7 @@
 import { Text, StyleSheet, Animated } from "react-native";
 import { useEffect, useState } from "react";
 
-import COLORS from '@/app/shared/components/utils/colors';
+import COLORS from '@/app/shared/utils/colors';
 
 export interface HeaderComponentProps {
     imageSource: string;

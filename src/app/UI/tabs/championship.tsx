@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 
-import COLORS from '@/app/shared/components/utils/colors';
+import COLORS from '@/app/shared/utils/colors';
 import TableComponent from '@/app/shared/components/table/table';
 import { fetchDataChampionship, fetchDataChampionshipTable } from '@/app/service/service-championship';
 import HeaderComponent from '@/app/shared/components/header/header';
@@ -151,7 +151,7 @@ export default function Championship() {
                           })
                         ) : (
                           <TableComponent 
-                            key={123}
+                            key={'default-table'}
                             data={championshipTableQuery.data} 
                             header={['Clube','Pts', 'V', 'E', 'D','SG']} 
                           />

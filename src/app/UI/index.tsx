@@ -4,7 +4,7 @@ import { Credentials, useAuth0 } from 'react-native-auth0';
 import { Image } from 'expo-image';
 import ButtonComponent from '../shared/components/button/Button';
 import { router } from 'expo-router';
-import COLORS from '@/app/shared/components/utils/colors';
+import COLORS from '@/app/shared/utils/colors';
 import { QueryClient } from '@tanstack/react-query';
 
 export default function Login() {
@@ -40,11 +40,6 @@ export default function Login() {
 
     const isPressedButton = () => {
       router.replace("../UI/tabs/championship")
-      // if(!user) {
-      //   onLogin();
-      // } else {
-      //   onLogout();
-      // }
     }
   
     if (isLoading) {
