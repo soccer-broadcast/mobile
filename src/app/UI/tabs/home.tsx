@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet } from "react-native";
 
-export default function Team() {
+export default function Home() {
     return (
         <View style={styles.container}>
-            <Text>Team tabs</Text>
+            <Text>Home tabs</Text>
         </View>
     );
 }

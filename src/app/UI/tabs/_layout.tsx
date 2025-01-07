@@ -6,8 +6,22 @@ export default function Layout() {
     return(
         <Tabs screenOptions={{headerShown: false}}>
             <Tabs.Screen
+                name="home"
+                options={{ href: './home', title: "Home", headerShown: false,
+                    tabBarIcon: ( { focused }) => (
+                        <View>
+                             <IonIcons
+                                 name={focused ? "home-sharp" : "home-outline"}
+                                 size={30}
+                                 color={focused ? '#1E90FF': "#000000"}
+                             />  
+                         </View>
+                     ),
+                 }}
+            />
+            <Tabs.Screen
                 name="championship"
-                options={{ title: "Campeonato", headerShown: false,
+                options={{ href: './championship', title: "Campeonato", headerShown: false,
                     tabBarIcon: ( { focused }) => (
                        <View>
                             <IonIcons
@@ -20,22 +34,8 @@ export default function Layout() {
                 }}
             />
             <Tabs.Screen
-                name="team"
-                options={{ title: "Time", headerShown: false,
-                    tabBarIcon: ( { focused }) => (
-                        <View>
-                             <IonIcons
-                                 name={focused ? "shield-sharp" : "shield-outline"}
-                                 size={30}
-                                 color={focused ? '#1E90FF': "#000000"}
-                             />  
-                         </View>
-                     ),
-                 }}
-            />
-            <Tabs.Screen
                 name="user"
-                options={{ title: "Usuário", headerShown: false,
+                options={{ href: './user', title: "Usuário", headerShown: false,
                     tabBarIcon: ( { focused }) => (
                         <View>
                              <IonIcons

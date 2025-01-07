@@ -1,5 +1,5 @@
 import { TouchableOpacity, StyleSheet, Text, TouchableOpacityProps } from 'react-native';
-import COLORS from '../utils/colors';
+import COLORS from '../../utils/colors';
 
 export default function ButtonComponent( { pressed, title, ...rest }: {pressed: () => void, title: string} & TouchableOpacityProps ) {
     return (

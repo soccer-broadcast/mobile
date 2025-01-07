@@ -4,8 +4,8 @@ import { Credentials, useAuth0 } from 'react-native-auth0';
 import { Image } from 'expo-image';
 import ButtonComponent from '../shared/components/button/Button';
 import { router } from 'expo-router';
-import COLORS from '@/app/shared/components/utils/colors';
-
+import COLORS from '@/app/shared/utils/colors';
+import { QueryClient } from '@tanstack/react-query';
 
 export default function Login() {
     const { authorize, clearSession, user, getCredentials, isLoading } = useAuth0();
@@ -39,12 +39,7 @@ export default function Login() {
     };
 
     const isPressedButton = () => {
-      router.push("../UI/tabs/championship")
-      // if(!user) {
-      //   onLogin();
-      // } else {
-      //   onLogout();
-      // }
+      router.replace("../UI/tabs/home")
     }
   
     if (isLoading) {
@@ -56,9 +51,8 @@ export default function Login() {
         <Image 
           style={styles.image}
           source={require('../../../assets/soccer.png')}/>
-        <Text style={styles.text}>Onde Assistir Seu Jogo </Text>
+        <Text style={styles.text}>Onde Assistir</Text>
         <ButtonComponent pressed={isPressedButton} title='Entrar' activeOpacity={0.5}/>
-        {/* {!user && <ButtonComponent pressed={isPressedButton} title='Entrar' activeOpacity={0.5}/>} */}
       </View>
     );
   };

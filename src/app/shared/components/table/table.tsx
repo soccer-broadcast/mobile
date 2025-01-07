@@ -1,9 +1,13 @@
 import React from 'react';
 import { Image } from 'expo-image';
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
-import TableChampionship from '../utils/championship';
 
-export default function TableComponent({ data, header }: { data: TableChampionship[] | [], header: string[] }) {  
+export interface TableComponentProps {
+  data: unknown[];
+  header: string[];
+}
+
+export default function TableComponent({ data, header }: TableComponentProps) {  
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -16,7 +20,7 @@ export default function TableComponent({ data, header }: { data: TableChampionsh
                     {data.length === 0 ? (
                         <Text>Carregando...</Text>
                     ) : (
-                        data.map((item, index) => (
+                        data.map((item, index: number) => (
                             <View key={index} style={styles.row}>
                                 <Text style={styles.cellPostition}>{item.posicao}</Text>
                                 <Image  source={{ uri: item.time.escudo }} 
@@ -53,7 +57,6 @@ const styles = StyleSheet.create({
         padding: 10,
       },
       header: {
-        backgroundColor: '#f4f4f4',
         borderBottomWidth: 2,
         borderBottomColor: '#aaa',
       },
