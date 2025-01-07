@@ -3,7 +3,7 @@ const baseURL = 'http://localhost:3200';
 
     
 export const fetchDataChampionshipTable = async () => { 
-    const url = `${baseURL}/table/2ff7dec9-2bd5-4c23-9d94-ddb7d5ff9bf5`;
+    const url = `${baseURL}/table/b9b0371b-4030-4dde-b020-fc42dcdf89b0`;
     const options = {
         method: 'GET',
         headers: { 'Authorization': bearerToken }
@@ -20,7 +20,7 @@ export const fetchDataChampionshipTable = async () => {
 };
 
 export const fetchDataChampionship = async () => { 
-    const url = `${baseURL}/championship/2ff7dec9-2bd5-4c23-9d94-ddb7d5ff9bf5`;
+    const url = `${baseURL}/championship/b9b0371b-4030-4dde-b020-fc42dcdf89b0`;
     const options = {
         method: 'GET',
         headers: { 'Authorization': bearerToken }

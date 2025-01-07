@@ -1,4 +1,4 @@
-import { Text, StyleSheet, Animated } from "react-native";
+import { Text, StyleSheet, Animated, View } from "react-native";
 import { useEffect, useState } from "react";
 
 import COLORS from '@/app/shared/utils/colors';
@@ -12,12 +12,14 @@ export interface HeaderComponentProps {
 
 export default function HeaderComponent({ imageSource, title, headerScrollHeight, imageScaleHight }: HeaderComponentProps) {
     const [ isRow, setIsRow ] = useState<boolean>(false);
+    const [ currentOffset, setCurrentOffset ] = useState<number>(0);
     
     useEffect(() => {
         const listener = headerScrollHeight.addListener((event) => {
             const currentOffset = event.value;
 
             (currentOffset > 100)? setIsRow(false) : setIsRow(true);
+            setCurrentOffset(currentOffset);
         });
 
         return () => { headerScrollHeight.removeListener(listener); };
@@ -32,14 +34,18 @@ export default function HeaderComponent({ imageSource, title, headerScrollHeight
                     backgroundColor: COLORS.green,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    flexDirection: isRow ? 'row' : 'column'
                 },
             ]}>
-            <Animated.Image source={{uri: imageSource}} style={{
-                width: imageScaleHight,
-                height: imageScaleHight,
-            }} resizeMode="contain"/>
-            <Text style={styles.title}>{title}</Text>
+            
+                <View style={styles.container}>
+                { (!isRow ) && (
+                    <Animated.Image source={{uri: imageSource}} style={{
+                            width: imageScaleHight,
+                            height: imageScaleHight
+                        }} resizeMode="contain"/>
+                    )}
+                    <Text style={styles.title}>{title}</Text>
+                </View>
         </Animated.View>
     );
 }
