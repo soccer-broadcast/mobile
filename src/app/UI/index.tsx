@@ -39,7 +39,7 @@ export default function Login() {
     };
 
     const isPressedButton = () => {
-      router.replace("../UI/tabs/championship")
+      router.replace("../UI/tabs/home")
     }
   
     if (isLoading) {
