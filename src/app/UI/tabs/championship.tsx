@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 
@@ -9,6 +9,7 @@ import HeaderComponent from '@/app/shared/components/header/header';
 import MenuTabsComponent from '@/app/shared/components/menu-tabs/menu-tabs';
 import { fetchDataChampionshipRound } from '@/app/service/service-round';
 import ListComponent from '@/app/shared/components/list/list';
+import { useLocalSearchParams } from 'expo-router';
 
 export interface Championship { 
   id: number;
@@ -78,6 +79,8 @@ const H_MIN_HEIGHT = 50;
 const H_SCROLL_DISTANCE = H_MAX_HEIGHT - H_MIN_HEIGHT;
 
 export default function Championship() {
+    const { id } = useLocalSearchParams();
+    const [ championshipId, setChampionshipId ] = useState<string>();
     const [ tabActive, setTabActive ] = useState(0);
     const scrollOffsetY = useRef(new Animated.Value(0)).current;
 
@@ -95,17 +98,17 @@ export default function Championship() {
 
     const championshipTableQuery = useQuery({
       queryKey: ['championshipTable'],
-      queryFn: () => fetchDataChampionshipTable(),
+      queryFn: () => fetchDataChampionshipTable(id as string),
     });
 
     const championshipQuery = useQuery({
       queryKey: ['championship'],
-      queryFn: () => fetchDataChampionship(),
+      queryFn: () => fetchDataChampionship(id as string),
     });
 
     const roundQuery = useQuery({
       queryKey: ['round'],
-      queryFn: () => fetchDataChampionshipRound(),
+      queryFn: () => fetchDataChampionshipRound(id as string),
     });
 
     const getTableGroups = (tableData: any) => { 
@@ -118,10 +121,21 @@ export default function Championship() {
       setTabActive(index);
     }
 
+
+    useEffect(() => {
+      setChampionshipId(id as string);
+
+      championshipQuery.refetch();
+      championshipTableQuery.refetch();
+      roundQuery.refetch();
+    }, [id]);
+
     return (
         <View style={styles.container}>
-            { championshipTableQuery.isLoading || championshipQuery.isLoading ? (
-                <Text>Carregando...</Text>
+            { championshipQuery.data === undefined || championshipTableQuery.data === undefined || roundQuery.data === undefined ? (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 20, width: 250, textAlign: 'center' }}>Favor selecione um campeonato na home</Text>
+                </View>
             ) : 
               <>
                 <HeaderComponent 

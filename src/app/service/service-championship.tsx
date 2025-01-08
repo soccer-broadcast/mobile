@@ -2,8 +2,8 @@ const bearerToken = 'Bearer live_378a59495af5df81988afefdc2cf99';
 const baseURL = 'http://localhost:3200';
 
     
-export const fetchDataChampionshipTable = async () => { 
-    const url = `${baseURL}/table/b9b0371b-4030-4dde-b020-fc42dcdf89b0`;
+export const fetchDataChampionshipTable = async (id :string) => { 
+    const url = `${baseURL}/table/${id}`;
     const options = {
         method: 'GET',
         headers: { 'Authorization': bearerToken }
@@ -19,8 +19,8 @@ export const fetchDataChampionshipTable = async () => {
     }
 };
 
-export const fetchDataChampionship = async () => { 
-    const url = `${baseURL}/championship/b9b0371b-4030-4dde-b020-fc42dcdf89b0`;
+export const fetchDataChampionship = async (id :string) => { 
+    const url = `${baseURL}/championship/${id}`;
     const options = {
         method: 'GET',
         headers: { 'Authorization': bearerToken }
@@ -36,4 +36,16 @@ export const fetchDataChampionship = async () => {
     }
 };
 
-export default { fetchDataChampionship, fetchDataChampionshipTable };
+export const fetchAllChampionships = async () => { 
+    const url = `${baseURL}/championships`;
+
+    try {
+        const response: any = await fetch(url);
+        return await response.json();
+    } catch (error) {
+        throw new Error(`Erro ao buscar o campeonato: ${error}`);
+    }
+};
+
+
+export default { fetchDataChampionship, fetchDataChampionshipTable, fetchAllChampionships };
