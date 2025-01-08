@@ -132,8 +132,10 @@ export default function Championship() {
 
     return (
         <View style={styles.container}>
-            { championshipTableQuery.isLoading || championshipQuery.isLoading ? (
-                <Text>Carregando...</Text>
+            { championshipQuery.data === undefined || championshipTableQuery.data === undefined || roundQuery.data === undefined ? (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 20, width: 250, textAlign: 'center' }}>Favor selecione um campeonato na home</Text>
+                </View>
             ) : 
               <>
                 <HeaderComponent 
