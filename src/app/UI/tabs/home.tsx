@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
@@ -7,15 +7,24 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 import COLORS from "@/app/shared/utils/colors";
 import { fetchAllChampionships } from "@/app/service/service-championship";
+import { fetchDataUser } from "@/app/service/service-user";
 
 export default function Home() {
-
-    const { data, isLoading, error} = useQuery({
+    const [ favoriteChampionships, setFavoriteChampionships ] = useState<any>([]);
+    const { data, isLoading } = useQuery({
         queryKey: ['championships'],
         queryFn: () => fetchAllChampionships(),
     });
 
-    const iconsFav = [ '2ff7dec9-2bd5-4c23-9d94-ddb7d5ff9bf5', 'acdc645a-5a26-48eb-b94b-4a3e03a86e1d' ];
+    const userQuery = useQuery({
+        queryKey: ['user'],
+        queryFn: () => fetchDataUser('00dee58c-e8f0-45f7-8281-0803ae877968'),
+    });
+
+    useEffect(() => {
+        setFavoriteChampionships(userQuery.data?.favoriteChampionship);
+        userQuery.refetch();
+    }, [ userQuery, data]);
 
     return (
         <View style={styles.container}>
@@ -32,7 +41,7 @@ export default function Home() {
                                         <Image style={styles.imageChampionship} source={{ uri: JSON.parse(item.jsonFromExternalApi).logo }} contentFit="contain" />
                                     </View>
                                     <View style={{ alignItems: 'flex-end' }}>
-                                        { iconsFav.filter((id) => id === item.id).length > 0 ? (<Ionicons name="heart-sharp" size={24} color={COLORS.light_green} />) : <Ionicons name="heart-outline" size={24} color={COLORS.black} /> }
+                                        { favoriteChampionships?.filter((championship: any) => championship.id === item.id).length > 0 ? (<Ionicons name="heart-sharp" size={24} color={COLORS.light_green} />) : <Ionicons name="heart-outline" size={24} color={COLORS.black} /> }
                                         <Text> {JSON.parse(item.jsonFromExternalApi).fase_atual.nome}</Text>
                                         <Text> Acesse a tabela</Text>
                                     </View>

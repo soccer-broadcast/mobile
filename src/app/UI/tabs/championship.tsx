@@ -10,6 +10,7 @@ import MenuTabsComponent from '@/app/shared/components/menu-tabs/menu-tabs';
 import { fetchDataChampionshipRound } from '@/app/service/service-round';
 import ListComponent from '@/app/shared/components/list/list';
 import { useLocalSearchParams } from 'expo-router';
+import { fetchDataUser } from '@/app/service/service-user';
 
 export interface Championship { 
   id: number;
@@ -109,6 +110,11 @@ export default function Championship() {
     const roundQuery = useQuery({
       queryKey: ['round'],
       queryFn: () => fetchDataChampionshipRound(id as string),
+    });
+
+    const userQuery = useQuery({
+      queryKey: ['user'],
+      queryFn: () => fetchDataUser('00dee58c-e8f0-45f7-8281-0803ae877968'),
     });
 
     const getTableGroups = (tableData: any) => { 
