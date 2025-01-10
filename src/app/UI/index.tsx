@@ -1,43 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
-import { Credentials, useAuth0 } from 'react-native-auth0';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import COLORS from '@/app/shared/utils/colors';
-import { QueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
+import COLORS from '@/app/shared/utils/colors';
 import InputComponent from '../shared/components/input/input';
 import ButtonComponent from '../shared/components/button/Button';
 import { fetchLogin } from '../service/service-login';
+import { getValueStorage, saveStorage } from '../service/service-storage';
 
 export default function Login() {
     const { control } = useForm();
 
+    useEffect(()  => {
+      const getStorage = async () => {
+        // const token = await getValueStorage('token');
+        // if(token) {
+        //   router.navigate('./UI/tabs/home');
+        // }
+      }
 
-    useEffect(() => {
-      // if(user) {
-      //   router.navigate('./UI/championship/championship');
-      //   // router.navigate('../UI/login/login');
-      //   console.log('redirect');
-      // }
+      getStorage();
     }, [])
+
+   
 
     const onLogin = async (data: any) => {
       try {
         const res = await fetchLogin(data);
         if(res.token) {
+          saveStorage('token', res.token);
           router.replace("../UI/tabs/home")
         }
-      } catch (error) {
-        console.log('error');    
-      }
-    };
-    const onLogout = async () => {
-      try {
-        // await clearSession();
-      } catch (e) {
-        Alert.alert('Error logout: ' + e);
+      } catch (error) {    
+        Alert.alert('Login', 'Email ou senha inválidos');
       }
     };
 
