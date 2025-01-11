@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Alert, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useForm } from 'react-hook-form';
@@ -11,7 +11,9 @@ import { fetchLogin } from '../service/service-login';
 import { getValueStorage, saveStorage } from '../service/service-storage';
 
 export default function Login() {
-    const { control } = useForm();
+    const { control, handleSubmit, formState: { errors }} = useForm();
+    const emailRef = useRef<TextInput>(null);
+    const passwordRef = useRef<TextInput>(null);
 
     useEffect(()  => {
       const getStorage = async () => {
@@ -24,11 +26,11 @@ export default function Login() {
       getStorage();
     }, [])
 
-   
-
     const onLogin = async (data: any) => {
+      const { login, password } = data;
+
       try {
-        const res = await fetchLogin(data);
+        const res = await fetchLogin({ login, password });
         if(res.token) {
           saveStorage('token', res.token);
           router.replace("../UI/tabs/home")
@@ -37,11 +39,6 @@ export default function Login() {
         Alert.alert('Login', 'Email ou senha inválidos');
       }
     };
-
-    const isPressedButton = () => {
-      const { _formValues } = control;
-      onLogin(_formValues);
-    }
   
     // if (isLoading) {
     //   return <View style={styles.container}><Text>Loading</Text></View>;
@@ -54,22 +51,38 @@ export default function Login() {
           source={require('../../../assets/soccer.png')}/>
         <Text style={styles.text}>Onde Assistir</Text>
         <InputComponent 
-          placeholder='Email' 
           icon='mail' 
-          secureTextEntry={false} 
+          ref={emailRef} 
+          error={errors.login?.message}
+          inputProps={{
+            secureTextEntry: false,
+            placeholder: 'Email'
+          }}
           formProps={{
-            name: 'email',
-            control
-          }} />
+            name: 'login',
+            control,
+            rules: {
+              required: 'Email é obrigatório',
+            }
+          }} 
+        />
         <InputComponent 
-          placeholder='Senha' 
           icon='lock' 
-          secureTextEntry={true} 
+          ref={passwordRef}
+          error={errors.password?.message}
+          inputProps={{
+            secureTextEntry: true,
+            placeholder: 'Senha'
+          }}
           formProps={{
             name: 'password',
-            control
-          }}/>
-        <ButtonComponent pressed={isPressedButton} title='Entrar' activeOpacity={0.5} />
+            control,
+            rules: {
+              required: 'Senha é obrigatório'
+            }
+          }}
+        />
+        <ButtonComponent onPress={handleSubmit(onLogin)} title='Entrar' activeOpacity={0.5} />
       </View>
     );
   };

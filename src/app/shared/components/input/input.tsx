@@ -1,43 +1,53 @@
-import React, { useState } from 'react';
-import { TextInput, TextInputProps, View, StyleSheet } from 'react-native';
+import React, { forwardRef, useState } from 'react';
+import { TextInput, TextInputProps, View, StyleSheet, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Controller, UseControllerProps } from 'react-hook-form';
+import COLORS from '../../utils/colors';
 
 export interface InputProps {
-    placeholder: string;
     secureTextEntry?: boolean;
     isRequired?: boolean;
     icon: keyof typeof Feather.glyphMap,
-    inputProps?: TextInputProps,
-    formProps?: UseControllerProps
+    inputProps: TextInputProps,
+    formProps: UseControllerProps,
+    error?: string  
 }
 
-export default function InputComponent({ placeholder, secureTextEntry, inputProps, icon, formProps }: InputProps) {
-    const [value, setValue] = useState('');
-
+const InputComponent = forwardRef<TextInput, InputProps>(({ inputProps, icon, formProps, error } , ref) =>  {
     return (
         <Controller 
-            render={({ field }) => (
-                <View style={styles.group}>
-                    <View style={styles.icon} >
-                        <Feather name={icon} size={24} color="black" />
+            name={formProps.name}
+            control={formProps.control}
+            rules={formProps.rules}
+
+            render={({ field: { onChange, value } }) => (
+                <View style={styles.container}>
+                    <View style={[styles.group, { borderColor: error ? 'red' : COLORS.light_green }]}>
+                        <View style={[styles.icon, { borderColor: error ? 'red' : COLORS.light_green }]} >
+                            <Feather name={icon} size={24} color={error ? 'red' : COLORS.light_green} />
+                        </View>
+                        <TextInput
+                            ref={ref}
+                            style={styles.input}
+                            placeholder={inputProps.placeholder}
+                            secureTextEntry={inputProps.secureTextEntry}
+                            onChangeText={onChange}
+                            value={value}
+                            {...inputProps}
+                        />
                     </View>
-                    <TextInput
-                    style={styles.input}
-                    placeholder={placeholder}
-                    secureTextEntry={secureTextEntry}
-                    onChangeText={field.onChange}
-                    value={field.value}
-                    {...inputProps}
-                />
+                    {error && <Text style={styles.error}>{error}</Text>}
                 </View>
             )}
-            {...formProps}
         />
     )
-}
+});
 
 const styles = StyleSheet.create({
+    container: {
+        width: '100%',
+        alignItems: 'center',
+    },
     group: {
         width: '100%',
         flexDirection: 'row',
@@ -46,16 +56,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 5,
-        borderColor: 'gray', 
+        borderColor: COLORS.light_green, 
         borderWidth: 1,
-        marginBottom: 20
+        marginBottom: 15
     },
     icon: {
         width: 46,
         height: 46,
         overflow: 'hidden',
         borderRightWidth: 1,
-        borderColor: 'gray',
+        borderColor: COLORS.light_green,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -64,5 +74,12 @@ const styles = StyleSheet.create({
         height: 46,
         padding: 16,
         backgroundColor:'#FFFFFF'
+    },
+    error: {
+        color: 'red',
+        fontSize: 12,
+        marginTop: 5
     }
 });
+
+export default InputComponent;
