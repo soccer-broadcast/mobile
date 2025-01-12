@@ -1,7 +1,7 @@
 import React, { forwardRef, useState } from 'react';
 import { TextInput, TextInputProps, View, StyleSheet, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { Controller, UseControllerProps } from 'react-hook-form';
+import { Controller, FieldError, FieldErrorsImpl, Merge, UseControllerProps } from 'react-hook-form';
 import COLORS from '../../utils/colors';
 
 export interface InputProps {
@@ -10,7 +10,7 @@ export interface InputProps {
     icon: keyof typeof Feather.glyphMap,
     inputProps: TextInputProps,
     formProps: UseControllerProps,
-    error?: string  
+    error?: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>>   
 }
 
 const InputComponent = forwardRef<TextInput, InputProps>(({ inputProps, icon, formProps, error } , ref) =>  {
@@ -36,7 +36,7 @@ const InputComponent = forwardRef<TextInput, InputProps>(({ inputProps, icon, fo
                             {...inputProps}
                         />
                     </View>
-                    {error && <Text style={styles.error}>{error}</Text>}
+                    {error && <Text style={styles.error}>{error as string}</Text>}
                 </View>
             )}
         />

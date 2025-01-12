@@ -17,10 +17,10 @@ export default function Login() {
 
     useEffect(()  => {
       const getStorage = async () => {
-        // const token = await getValueStorage('token');
-        // if(token) {
-        //   router.navigate('./UI/tabs/home');
-        // }
+        const token = await getValueStorage('token');
+        if(token) {
+          router.push('./UI/tabs/home');
+        }
       }
 
       getStorage();
@@ -33,7 +33,7 @@ export default function Login() {
         const res = await fetchLogin({ login, password });
         if(res.token) {
           saveStorage('token', res.token);
-          router.replace("../UI/tabs/home")
+          router.push("../UI/tabs/home")
         }
       } catch (error) {    
         Alert.alert('Login', 'Email ou senha inválidos');
@@ -56,7 +56,8 @@ export default function Login() {
           error={errors.login?.message}
           inputProps={{
             secureTextEntry: false,
-            placeholder: 'Email'
+            placeholder: 'Email',
+            autoCapitalize: 'none',
           }}
           formProps={{
             name: 'login',

@@ -2,10 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from "react-native";
 import { Image } from "expo-image";
+import { router } from 'expo-router';
 
+import { removeStorage } from "@/app/service/service-storage";
+import { fetchAllChampionships } from "@/app/service/service-championship";
 import { fetchDataUser, updateDataUser } from "@/app/service/service-user";
 import COLORS from "@/app/shared/utils/colors";
-import { fetchAllChampionships } from "@/app/service/service-championship";
+import ButtonComponent from "@/app/shared/components/button/Button";
+import ButtonCommon from "@/app/shared/components/button/Button-common";
 
 export default function User() {
     const [ userData, setUserData ] = useState<any>();
@@ -26,7 +30,7 @@ export default function User() {
 
         const alreadyAdded = data.favoriteChampionship.filter((item: any) => item.id === id);
 
-        (alreadyAdded.length > 0) ? data.favoriteChampionship = data.favoriteChampionship.filter((item: any) => item.id !== id) : data.favoriteChampionship.push(allChampionships.data.find((item: any) => item.id === id))
+        (alreadyAdded.length > 0) ? data.favoriteChampionship = data?.favoriteChampionship.filter((item: any) => item.id !== id) : data.favoriteChampionship.push(allChampionships.data.find((item: any) => item.id === id))
 
         const user = {
             id: data?.id,
@@ -53,7 +57,12 @@ export default function User() {
     }
 
     const isFavorite = (id: string) => {
-        return data.favoriteChampionship.find((item: any) => item.id === id);
+        return data?.favoriteChampionship.find((item: any) => item.id === id);
+    }
+
+    const onLogout = () => {
+        removeStorage('token');
+        router.replace("../login");
     }
 
     useEffect(() => {
@@ -68,6 +77,7 @@ export default function User() {
                 <View style={{ alignItems: 'flex-start' }}>
                     <Text style={styles.text}> { data?.name }</Text>
                     <Text style={styles.text}> { data?.login }</Text>
+                    <ButtonCommon title="Sair" activeOpacity={0.5} onPress={onLogout} width={150} marginLeft={8} />
                 </View>
             </View>
 

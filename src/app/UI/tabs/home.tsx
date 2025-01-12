@@ -33,7 +33,7 @@ export default function Home() {
             ) : 
                 <View style={styles.container}>  
                     <Text style={styles.title}>Nossos campeonatos</Text>
-                    {data && data?.map((item: any) => (
+                    {data != undefined && data?.map((item: any) => (
                         <View key={item.id} style={styles.cardChampionship}>
                             <Link href={{ pathname: './championship', params: { id: item.id }}} asChild>
                                 <TouchableOpacity style={styles.buttonChampionship}>
