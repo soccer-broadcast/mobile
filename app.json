@@ -14,13 +14,8 @@
       "backgroundColor": "#ffffff"
     },
     "plugins": [
-      [
-        "react-native-auth0",
-        {
-          "domain": "dev-g0agga2c5dcqfwjm.us.auth0.com"
-        }
-      ],
-      "expo-router"
+      "expo-router",
+      "expo-secure-store"
     ],
     "ios": {
       "supportsTablet": true,
