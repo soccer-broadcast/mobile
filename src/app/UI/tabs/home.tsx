@@ -8,6 +8,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import COLORS from "@/app/shared/utils/colors";
 import { fetchAllChampionships } from "@/app/service/service-championship";
 import { fetchDataUser } from "@/app/service/service-user";
+import { getValueStorage } from "@/app/service/service-storage";
 
 export default function Home() {
     const [ favoriteChampionships, setFavoriteChampionships ] = useState<any>([]);
@@ -18,7 +19,10 @@ export default function Home() {
 
     const userQuery = useQuery({
         queryKey: ['user'],
-        queryFn: () => fetchDataUser('00dee58c-e8f0-45f7-8281-0803ae877968'),
+        queryFn: async () => {
+            const { id } = await JSON.parse(await getValueStorage('user') as string);
+            return fetchDataUser(id)
+        }
     });
 
     useEffect(() => {

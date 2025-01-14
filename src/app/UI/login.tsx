@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Alert, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Image } from 'expo-image';
-import { router } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { useForm } from 'react-hook-form';
 
 import COLORS from '@/app/shared/utils/colors';
@@ -9,6 +9,7 @@ import InputComponent from '../shared/components/input/input';
 import ButtonComponent from '../shared/components/button/Button';
 import { fetchLogin } from '../service/service-login';
 import { getValueStorage, saveStorage } from '../service/service-storage';
+import ButtonCommon from '../shared/components/button/Button-common';
 
 export default function Login() {
     const { control, handleSubmit, formState: { errors }} = useForm();
@@ -33,6 +34,7 @@ export default function Login() {
         const res = await fetchLogin({ login, password });
         if(res.token) {
           saveStorage('token', res.token);
+          saveStorage('user', JSON.stringify(res.user));
           router.push("../UI/tabs/home")
         }
       } catch (error) {    
@@ -73,7 +75,8 @@ export default function Login() {
           error={errors.password?.message}
           inputProps={{
             secureTextEntry: true,
-            placeholder: 'Senha'
+            placeholder: 'Senha',
+            autoCapitalize: 'none'
           }}
           formProps={{
             name: 'password',
@@ -84,6 +87,7 @@ export default function Login() {
           }}
         />
         <ButtonComponent onPress={handleSubmit(onLogin)} title='Entrar' activeOpacity={0.5} />
+        <ButtonCommon title='Cadastrar' width={'100%'} marginTop={20} onPress={() => router.push('../UI/signup')} />
       </View>
     );
   };

@@ -3,16 +3,17 @@ import COLORS from "../../utils/colors";
 
 type ButtonProps = TouchableOpacityProps & {
     title: string;
-    width?: number;
-    marginLeft?: number
+    width?: any;
+    marginLeft?: number;
+    marginTop?: number;
 }
 
-export default function ButtonCommon({ title, width = 100, marginLeft = 0, ...rest }: ButtonProps) {
+export default function ButtonCommon({ title, width = 100, marginLeft = 0, marginTop = 0, ...rest }: ButtonProps) {
     return (
         <TouchableOpacity 
             {...rest}
-            style={[styles.button, { width, marginLeft }]} >
-            <Text style={styles.text}> Sair</Text>
+            style={[styles.button, { width, marginLeft, marginTop }]} >
+            <Text style={styles.text}>{title}</Text>
         </TouchableOpacity>
     )
 }

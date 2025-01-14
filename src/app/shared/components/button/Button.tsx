@@ -15,7 +15,7 @@ export default function ButtonComponent( { title, ...rest }: ButtonProps ) {
 
 const styles = StyleSheet.create({
     button: {
-        width: 300,
+        width: '100%',
         height: 50,
         backgroundColor: COLORS.dark_blue,
         borderRadius: 5,
