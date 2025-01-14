@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef } from 'react';
 import { TextInput, TextInputProps, View, StyleSheet, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Controller, FieldError, FieldErrorsImpl, Merge, UseControllerProps } from 'react-hook-form';

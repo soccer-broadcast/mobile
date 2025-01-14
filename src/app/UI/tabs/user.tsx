@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from "rea
 import { Image } from "expo-image";
 import { router } from 'expo-router';
 
-import { removeStorage } from "@/app/service/service-storage";
+import { getValueStorage, removeStorage } from "@/app/service/service-storage";
 import { fetchAllChampionships } from "@/app/service/service-championship";
 import { fetchDataUser, updateDataUser } from "@/app/service/service-user";
 import COLORS from "@/app/shared/utils/colors";
@@ -15,7 +15,10 @@ export default function User() {
     const [ userData, setUserData ] = useState<any>();
     const { data } = useQuery({
         queryKey: ['user'],
-        queryFn: () => fetchDataUser('00dee58c-e8f0-45f7-8281-0803ae877968'),
+        queryFn: async () => {
+          const { id } = await JSON.parse(await getValueStorage('user') as string);
+          return fetchDataUser(id)
+        }
     });
 
     const allChampionships = useQuery({
@@ -57,6 +60,10 @@ export default function User() {
     }
 
     const isFavorite = (id: string) => {
+        if(!data?.favoriteChampionship) {
+            return false;
+        }
+
         return data?.favoriteChampionship.find((item: any) => item.id === id);
     }
 
