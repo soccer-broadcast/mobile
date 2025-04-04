@@ -1,6 +1,7 @@
 const baseURL = 'http://localhost:3200';
 
-export const fetchDataUser = async (id: string) => { 
+export const fetchDataUser = async (id: string) => {
+    console.log('fetchDataUser', id) 
     const url = `${baseURL}/user/${id}`;
     const options = {
         method: 'GET',
@@ -13,6 +14,8 @@ export const fetchDataUser = async (id: string) => {
 
         data.favoriteChampionship = JSON.parse(data.favoriteChampionship);
 
+
+        console.log( 'fetchuser', data);
         return data;
     } catch (error) {
         throw new Error(`Usuário não encontrado: ${error}`);

@@ -8,7 +8,6 @@ import { getValueStorage, removeStorage } from "@/app/service/service-storage";
 import { fetchAllChampionships } from "@/app/service/service-championship";
 import { fetchDataUser, updateDataUser } from "@/app/service/service-user";
 import COLORS from "@/app/shared/utils/colors";
-import ButtonComponent from "@/app/shared/components/button/Button";
 import ButtonCommon from "@/app/shared/components/button/Button-common";
 
 export default function User() {

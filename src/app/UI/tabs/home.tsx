@@ -42,11 +42,11 @@ export default function Home() {
                             <Link href={{ pathname: './championship', params: { id: item.id }}} asChild>
                                 <TouchableOpacity style={styles.buttonChampionship}>
                                     <View style={styles.imageChampionship}>
-                                        <Image style={styles.imageChampionship} source={{ uri: JSON.parse(item.jsonFromExternalApi).logo }} contentFit="contain" />
+                                        <Image style={styles.imageChampionship} source={{ uri: JSON.parse(item.jsonFromExternalApi)?.logo }} contentFit="contain" />
                                     </View>
                                     <View style={{ alignItems: 'flex-end' }}>
                                         { favoriteChampionships?.filter((championship: any) => championship.id === item.id).length > 0 ? (<Ionicons name="heart-sharp" size={24} color={COLORS.light_green} />) : <Ionicons name="heart-outline" size={24} color={COLORS.black} /> }
-                                        <Text> {JSON.parse(item.jsonFromExternalApi).fase_atual.nome}</Text>
+                                        <Text> {JSON.parse(item.jsonFromExternalApi)?.fase_atual.nome}</Text>
                                         <Text> Acesse a tabela</Text>
                                     </View>
                                 </TouchableOpacity>
